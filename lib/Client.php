@@ -107,6 +107,12 @@ class Client
      * @var array
      */
     private $publicCertData;
+    /**
+     * Curl timeout
+     *
+     * @var int
+     */
+    private $connectionTimeout = 8;
 
     /**
      * FiskalAPI constructor.
@@ -123,6 +129,14 @@ class Client
         $this->initUrl($demo);
         $this->initCertificate($certificate, $pass, $rawCertificate);
         $this->initRootCertificatePath($demo);
+    }
+
+    /**
+     * @param $timeout
+     * @return void
+     */
+    public function setConnectionTimeout($timeout) {
+        $this->connectionTimeout = $timeout;
     }
 
     /**
@@ -625,8 +639,8 @@ class Client
     {
         $options = [
             CURLOPT_URL            => $this->getUrl(),
-            CURLOPT_CONNECTTIMEOUT => 5,
-            CURLOPT_TIMEOUT        => 5,
+            CURLOPT_CONNECTTIMEOUT => $this->getConnectionTimeout(),
+            CURLOPT_TIMEOUT        => $this->getConnectionTimeout(),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $payload,
@@ -703,5 +717,10 @@ class Client
         $payload = $this->signXML($xmlRequest->toXML());
 
         return $this->sendSoap($payload);
+    }
+
+    private function getConnectionTimeout()
+    {
+        return $this->connectionTimeout;
     }
 }
