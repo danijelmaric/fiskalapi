@@ -159,6 +159,15 @@ class Invoice
     public $operatorOib;
 
     /**
+     * OIB of operator on payment device that created the invoice
+     *
+     * In case of self-served payment devices, use store OIB (oib on the invoice)
+     *
+     * @var string
+     */
+    public $cutomerOib;
+
+    /**
      * Security code
      *
      * @var string
@@ -684,6 +693,18 @@ class Invoice
         return $this;
     }
 
+    public function getCutomerOib(): string
+    {
+        return $this->cutomerOib;
+    }
+
+    public function setCutomerOib(string $cutomerOib)
+    {
+        $this->cutomerOib = $cutomerOib;
+
+        return $this;
+    }
+
     /**
      * Format price for request
      *
@@ -777,6 +798,10 @@ class Invoice
         $writer->writeElementNs($namespace, 'IznosUkupno', null, $this->getTotalValue());
         $writer->writeElementNs($namespace, 'NacinPlac', null, $this->getPaymentType());
         $writer->writeElementNs($namespace, 'OibOper', null, $this->getOperatorOib());
+
+        // Fiskalizacija 2.0 / OIB kupca (Od 1.1.2026.)
+        $writer->writeElementNs($namespace, 'OibPrimateljaRacuna', null, $this->getCutomerOib());
+
         $writer->writeElementNs($namespace, 'ZastKod', null, $this->getSecurityCode());
         $writer->writeElementNs($namespace, 'NakDost', null, $this->getResendFlag() ? 'true' : 'false');
         if ($this->getParagonInvoiceNumber()) {
@@ -789,5 +814,7 @@ class Invoice
 
         return $writer->outputMemory();
     }
+
+
 
 }
