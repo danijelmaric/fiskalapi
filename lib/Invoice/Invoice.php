@@ -165,7 +165,7 @@ class Invoice
      *
      * @var string
      */
-    public $cutomerOib;
+    public $customerOib;
 
     /**
      * Security code
@@ -693,14 +693,14 @@ class Invoice
         return $this;
     }
 
-    public function getCutomerOib(): string
+    public function getCustomerOib(): string
     {
-        return $this->cutomerOib;
+        return $this->customerOib;
     }
 
-    public function setCutomerOib(string $cutomerOib)
+    public function setCustomerOib(string $customerOib)
     {
-        $this->cutomerOib = $cutomerOib;
+        $this->customerOib = $customerOib;
 
         return $this;
     }
@@ -800,7 +800,7 @@ class Invoice
         $writer->writeElementNs($namespace, 'OibOper', null, $this->getOperatorOib());
 
         // Fiskalizacija 2.0 / OIB kupca (Od 1.1.2026.)
-        $writer->writeElementNs($namespace, 'OibPrimateljaRacuna', null, $this->getCutomerOib());
+        $writer->writeElementNs($namespace, 'OibPrimateljaRacuna', null, $this->getCustomerOib());
 
         $writer->writeElementNs($namespace, 'ZastKod', null, $this->getSecurityCode());
         $writer->writeElementNs($namespace, 'NakDost', null, $this->getResendFlag() ? 'true' : 'false');
