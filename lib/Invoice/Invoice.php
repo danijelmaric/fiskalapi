@@ -799,10 +799,13 @@ class Invoice
         $writer->writeElementNs($namespace, 'NacinPlac', null, $this->getPaymentType());
         $writer->writeElementNs($namespace, 'OibOper', null, $this->getOperatorOib());
 
-        // Fiskalizacija 2.0 / OIB kupca (Od 1.1.2026.)
-        $writer->writeElementNs($namespace, 'OibPrimateljaRacuna', null, $this->getCustomerOib());
-
         $writer->writeElementNs($namespace, 'ZastKod', null, $this->getSecurityCode());
+
+        if ($this->getCustomerOib()) {
+            // Fiskalizacija 2.0 / OIB kupca (Od 1.1.2026.)
+            $writer->writeElementNs($namespace, 'OibPrimateljaRacuna', null, $this->getCustomerOib());
+        }
+
         $writer->writeElementNs($namespace, 'NakDost', null, $this->getResendFlag() ? 'true' : 'false');
         if ($this->getParagonInvoiceNumber()) {
             $writer->writeElementNs($namespace, 'ParagonBrRac', null, $this->getParagonInvoiceNumber());
