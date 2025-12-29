@@ -693,12 +693,12 @@ class Invoice
         return $this;
     }
 
-    public function getCustomerOib(): string
+    public function getCustomerOib()
     {
         return $this->customerOib;
     }
 
-    public function setCustomerOib(string $customerOib)
+    public function setCustomerOib($customerOib)
     {
         $this->customerOib = $customerOib;
 
